@@ -3,7 +3,7 @@ import {Observer} from "./observer";
 import {SphericalCoordinates} from "./coordinates/spherical-coordinates";
 import {SOLAR_SYSTEM_OBJECTS_LIST} from "./solar-system-objects/solar-system-objects-list";
 
-export const MainModule = Object.assign({}, {
+export const MainModule = {
     _skyObjects: [].concat(SOLAR_SYSTEM_OBJECTS_LIST),
     _observer: new Observer(),
     _julianDate: null,
@@ -41,4 +41,4 @@ export const MainModule = Object.assign({}, {
         const equatorialCoordinates = this._observer.getRADecCoordinatesForSolarSystemObject(this.getSkyObjectByName(objectName), this.getJulianDate());
         return this._observer.getAltAzCoordinatesForEquatorialCoordinates(equatorialCoordinates, this.getJulianDate());
     }
-});
+};
