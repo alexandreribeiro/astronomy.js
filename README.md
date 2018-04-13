@@ -10,8 +10,11 @@ You can see this project running at: <https://rawgit.com/alexandreribeiro/astron
 ## Quick guide
 
 ```javascript
+// Earth, latitude, longitude, elevation from sea level (in meters)
 AstronomyJS.setObserverLocation('Earth', 0, 0, 0);
+// Any javascript date
 AstronomyJS.setDate(new Date());
+// Sun, Mercury, Venus, etc.
 AstronomyJS.getAltAzCoordinatesForObject('Sun');
 ```
 
@@ -24,7 +27,6 @@ AstronomyJS.getAltAzCoordinatesForObject('Sun');
 This library provides astronomical calculations for leisure purposes only.
 Some important basic aspects are not implemented, such as:
 - Atmospheric refraction
-- Earth's oblation
 - Orbit perturbations
 
 ## References
