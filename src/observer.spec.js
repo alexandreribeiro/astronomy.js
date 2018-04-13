@@ -9,7 +9,13 @@ describe("Observer", function() {
     const earth = new Earth();
     const mars = new Mars();
     const sun = new Sun();
-    const earthObserver = new Observer(new SphericalCoordinates(51.476852, -0.000500, earth.meanRadius + 46), earth);
+    const earthObserver = new Observer(
+        new SphericalCoordinates(
+            Constants.GREENWICH_OBSERVATORY_COORDINATES.LATITUDE,
+            Constants.GREENWICH_OBSERVATORY_COORDINATES.LONGITUDE,
+            Constants.GREENWICH_OBSERVATORY_COORDINATES.RADIUS),
+        earth
+    );
 
     it("should calculate local sidereal time in epoch day zero correctly", function() {
         expect(earthObserver.getLocalSiderealTime(Constants.JULIAN_DAY_2000)).toBeCloseTo(280.4601, 4);

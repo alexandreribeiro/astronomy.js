@@ -16,16 +16,19 @@ export const MainModule = {
         this._julianDate = newJulianDate;
     },
     getDate: function() {
-        return this._date || new Date();
+        return this._date;
     },
     setDate: function(newDate) {
         this._date = newDate;
         this.setJulianDate(TimeHelper.julianDate(newDate));
     },
     getSkyObjectByName: function(objectName) {
-        return this._skyObjects.find(function(element) {
-            return element.name === objectName;
-        });
+        for (let i in this._skyObjects) {
+            if (this._skyObjects[i].name === objectName) {
+                return this._skyObjects[i];
+            }
+        }
+        return null;
     },
     setObserverLocation: function(objectName, latitude, longitude, elevationFromObjectSurface) {
         const solarSystemObject = this.getSkyObjectByName(objectName);
