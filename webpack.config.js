@@ -1,8 +1,8 @@
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const path = require("path");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const path = require('path');
 module.exports = {
-    entry: ["./src/main.js"],
-    mode: "production",
+    entry: ['./src/main.js'],
+    mode: 'production',
     devtool: 'source-map',
     optimization: {
         minimize: true,
@@ -18,30 +18,37 @@ module.exports = {
         ]
     },
     output: {
-        path: path.resolve(__dirname, "dist"),
-        filename: "astronomy.min.js",
-        library: "AstronomyJS",
-        libraryExport: "MainModule",
-        libraryTarget: "umd"
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'astronomy.min.js',
+        library: 'AstronomyJS',
+        libraryExport: 'MainModule',
+        libraryTarget: 'umd'
     },
     module: {
         rules: [{
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
-            }, {
-                test: /\.js$/,
-                exclude: /node_modules|\.spec\.js$/,
-                enforce: 'post',
-                use: {
-                    loader: "istanbul-instrumenter-loader",
-                    options: {
-                        esModules: true
-                    }
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'babel-loader'
+            }
+        }, {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            enforce: 'pre',
+            use: {
+                loader: 'eslint-loader'
+            }
+        }, {
+            test: /\.js$/,
+            exclude: /node_modules|\.spec\.js$/,
+            enforce: 'post',
+            use: {
+                loader: 'istanbul-instrumenter-loader',
+                options: {
+                    esModules: true
                 }
             }
+        }
         ]
     }
 };

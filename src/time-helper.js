@@ -1,16 +1,16 @@
-import {Constants} from "./constants";
-import {MathHelper} from "./math-helper";
+import {Constants} from './constants';
+import {MathHelper} from './math-helper';
 
 export class TimeHelper {
     static julianDate(date) {
         return ((date / Constants.MS_PER_DAY) + Constants.JULIAN_DAY_OFFSET);
-    };
+    }
     static julianDaysSinceEpoch2000(julianDate) {
         return julianDate - Constants.JULIAN_DAY_2000;
     }
     static julianCenturiesSinceEpoch2000(julianDate) {
         return this.julianDaysSinceEpoch2000(julianDate) / Constants.DAYS_PER_JULIAN_CENTURY;
-    };
+    }
     static meanSiderealTime(julianDate) {
         const jd = this.julianDaysSinceEpoch2000(julianDate);
         const t = this.julianCenturiesSinceEpoch2000(julianDate);

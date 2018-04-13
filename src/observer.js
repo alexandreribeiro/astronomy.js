@@ -1,8 +1,8 @@
-import {RectangularCoordinates} from "./coordinates/rectangular-coordinates";
-import {MathHelper} from "./math-helper";
-import {SphericalCoordinates} from "./coordinates/spherical-coordinates";
-import {TimeHelper} from "./time-helper";
-import {Constants} from "./constants";
+import {RectangularCoordinates} from './coordinates/rectangular-coordinates';
+import {MathHelper} from './math-helper';
+import {SphericalCoordinates} from './coordinates/spherical-coordinates';
+import {TimeHelper} from './time-helper';
+import {Constants} from './constants';
 
 export class Observer {
     constructor(sphericalCoordinates, solarSystemObject) {
@@ -29,12 +29,12 @@ export class Observer {
             rectangularObjectCentricCoordinatesForSolarSystemObject.z * Math.sin(axialTiltInRadians),
             rectangularObjectCentricCoordinatesForSolarSystemObject.y * Math.sin(axialTiltInRadians) +
             rectangularObjectCentricCoordinatesForSolarSystemObject.z * Math.cos(axialTiltInRadians)
-        )
+        );
     }
 
     getDistanceToSolarSystemObject(otherSolarSystemObject, julianDate) {
         const objectCentricCoordinates = this.getRectangularObjectCentricCoordinatesForSolarSystemObject(otherSolarSystemObject, julianDate);
-        return Math.sqrt(objectCentricCoordinates.x ** 2 + objectCentricCoordinates.y ** 2 + objectCentricCoordinates.z ** 2);
+        return Math.sqrt(Math.pow(objectCentricCoordinates.x, 2) + Math.pow(objectCentricCoordinates.y, 2) + Math.pow(objectCentricCoordinates.z, 2));
     }
 
     getRADecCoordinatesForSolarSystemObject(otherSolarSystemObject, julianDate) {
@@ -42,7 +42,7 @@ export class Observer {
             this.getRectangularEquatorialCoordinatesForSolarSystemObject(otherSolarSystemObject, julianDate);
         const correction = (equatorialCoordinates.x > 0 && equatorialCoordinates.y < 0) ? 360 : (equatorialCoordinates.x < 0) ? 180 : 0;
         const rightAscension = MathHelper.radiansToDegrees(Math.atan(equatorialCoordinates.y / equatorialCoordinates.x)) + correction;
-        const declination = MathHelper.radiansToDegrees(Math.atan(equatorialCoordinates.z / Math.sqrt(equatorialCoordinates.x ** 2 + equatorialCoordinates.y ** 2)));
+        const declination = MathHelper.radiansToDegrees(Math.atan(equatorialCoordinates.z / Math.sqrt(Math.pow(equatorialCoordinates.x, 2) + Math.pow(equatorialCoordinates.y, 2))));
         return new SphericalCoordinates(declination, rightAscension, this.getDistanceToSolarSystemObject(otherSolarSystemObject, julianDate));
     }
 

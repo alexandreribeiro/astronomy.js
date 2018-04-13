@@ -1,8 +1,8 @@
-import {SkyObject} from "../sky-object";
-import {RectangularCoordinates} from "../coordinates/rectangular-coordinates";
-import {TimeHelper} from "../time-helper";
-import {MathHelper} from "../math-helper";
-import {Constants} from "../constants";
+import {SkyObject} from '../sky-object';
+import {RectangularCoordinates} from '../coordinates/rectangular-coordinates';
+import {TimeHelper} from '../time-helper';
+import {MathHelper} from '../math-helper';
+import {Constants} from '../constants';
 
 export class SolarSystemObject extends SkyObject {
     constructor(name, orbitalParameters, meanRadius, axialTilt) {

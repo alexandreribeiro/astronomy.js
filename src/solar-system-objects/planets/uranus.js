@@ -1,5 +1,5 @@
-import {SolarSystemObject} from "../solar-system-object";
-import {OrbitalParameters} from "../orbital-parameters";
+import {SolarSystemObject} from '../solar-system-object';
+import {OrbitalParameters} from '../orbital-parameters';
 
 export class Uranus extends SolarSystemObject {
     constructor() {

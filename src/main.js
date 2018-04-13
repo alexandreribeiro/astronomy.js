@@ -1,7 +1,7 @@
-import {TimeHelper} from "./time-helper";
-import {Observer} from "./observer";
-import {SphericalCoordinates} from "./coordinates/spherical-coordinates";
-import {SOLAR_SYSTEM_OBJECTS_LIST} from "./solar-system-objects/solar-system-objects-list";
+import {TimeHelper} from './time-helper';
+import {Observer} from './observer';
+import {SphericalCoordinates} from './coordinates/spherical-coordinates';
+import {SOLAR_SYSTEM_OBJECTS_LIST} from './solar-system-objects/solar-system-objects-list';
 
 export const MainModule = {
     _skyObjects: [].concat(SOLAR_SYSTEM_OBJECTS_LIST),

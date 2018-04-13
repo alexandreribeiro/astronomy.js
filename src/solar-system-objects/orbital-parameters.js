@@ -1,5 +1,5 @@
-import {MathHelper} from "../math-helper";
-import {Constants} from "../constants";
+import {MathHelper} from '../math-helper';
+import {Constants} from '../constants';
 
 export class OrbitalParameters {
     /**
@@ -47,18 +47,23 @@ export class OrbitalParameters {
     getEccentricity(julianCenturiesSinceEpoch2000) {
         return this.e0 + this.ec * julianCenturiesSinceEpoch2000;
     }
+
     getInclination(julianCenturiesSinceEpoch2000) {
         return MathHelper.modDegrees(this.i0 + this.ic / 3600 * julianCenturiesSinceEpoch2000);
     }
+
     getAscendingNode(julianCenturiesSinceEpoch2000) {
         return MathHelper.modDegrees(this.o0 + this.oc / 3600 * julianCenturiesSinceEpoch2000);
     }
+
     getPerihelion(julianCenturiesSinceEpoch2000) {
         return MathHelper.modDegrees(this.w0 + this.wc / 3600 * julianCenturiesSinceEpoch2000);
     }
+
     getMeanLongitude(julianCenturiesSinceEpoch2000) {
         return MathHelper.modDegrees(this.l0 + this.lc / 3600 * julianCenturiesSinceEpoch2000);
     }
+
     getMeanAnomaly(julianCenturiesSinceEpoch2000) {
         return MathHelper.modDegrees(this.getMeanLongitude(julianCenturiesSinceEpoch2000) - this.getPerihelion(julianCenturiesSinceEpoch2000));
     }
@@ -107,6 +112,6 @@ export class OrbitalParameters {
         let semiMajorAxis = this.getSemiMajorAxis(julianCenturiesSinceEpoch2000);
         let eccentricity = this.getEccentricity(julianCenturiesSinceEpoch2000);
         let trueAnomaly = this.getTrueAnomaly(julianCenturiesSinceEpoch2000);
-        return (semiMajorAxis * (1 - eccentricity ** 2)) / (1 + eccentricity * Math.cos(MathHelper.degreesToRadians(trueAnomaly)));
+        return (semiMajorAxis * (1 - Math.pow(eccentricity, 2))) / (1 + eccentricity * Math.cos(MathHelper.degreesToRadians(trueAnomaly)));
     }
 }

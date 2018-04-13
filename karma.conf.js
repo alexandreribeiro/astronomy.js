@@ -63,5 +63,5 @@ module.exports = function (config) {
         concurrency: Infinity,
 
         webpack: webpackConfig
-    })
-}
+    });
+};
