@@ -10,6 +10,8 @@ module.exports = {
             new UglifyJsPlugin({
                 sourceMap: true,
                 uglifyOptions: {
+                    compress: true,
+                    mangle: true,
                     output: {
                         ascii_only: true
                     },
