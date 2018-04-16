@@ -1,6 +1,6 @@
 {
   "name": "astronomyjs",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.0",
   "description": "A simple astronomy library made in javascript.",
   "main": "src/astronomy.js",
   "directories": {
