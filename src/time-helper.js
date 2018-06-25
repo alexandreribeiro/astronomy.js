@@ -5,6 +5,9 @@ export class TimeHelper {
     static julianDate(date) {
         return ((date / Constants.MS_PER_DAY) + Constants.JULIAN_DAY_OFFSET);
     }
+    static julianDateToDate(julianDate) {
+        return new Date((julianDate - Constants.JULIAN_DAY_OFFSET) * Constants.MS_PER_DAY);
+    }
     static julianDaysSinceEpoch2000(julianDate) {
         return julianDate - Constants.JULIAN_DAY_2000;
     }

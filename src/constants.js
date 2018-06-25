@@ -5,6 +5,20 @@ export const Constants = {
         LONGITUDE: -0.000500,
         RADIUS: 6371000 + 46
     },
+    EPHEMERIS_TYPE: {
+        RISE: 'rise',
+        SET: 'set',
+        TRANSIT: 'transit',
+        CIVIL_TWILIGHT: 'civil_twilight',
+        NAUTICAL_TWILIGHT: 'nautical_twilight',
+        ASTRONOMICAL_TWILIGHT: 'astronomical_twilight'
+    },
+    SUN_ALTITUDE_FOR_EPHEMERIS: {
+        RISE_OR_SET: '-0.833',
+        CIVIL_TWILIGHT: '-6',
+        NAUTICAL_TWILIGHT: '-12',
+        ASTRONOMICAL_TWILIGHT: '-18'
+    },
     MS_PER_HOUR: 3600 * 1000,
     MS_PER_DAY: 3600 * 1000 * 24,
     MS_PER_YEAR: 3600 * 1000 * 24 * 365.2422,
