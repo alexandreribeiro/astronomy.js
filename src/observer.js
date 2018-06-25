@@ -72,23 +72,18 @@ export class Observer {
         return MathHelper.radiansToDegrees(Math.acos(localHourAngle));
     }
 
-    getIterationValueForPositionalEphemerisForObject(otherSolarSystemObject, julianDate, ephemerisType) {
+    getIterationValueForPositionalEphemerisForObject(solarSystemObject, julianDate, ephemerisType) {
         if (ephemerisType === Constants.EPHEMERIS_TYPE.TRANSIT) {
-            return julianDate - this.getObjectTransit(otherSolarSystemObject, julianDate) / 15 / 24;
-        } else if (ephemerisType === Constants.EPHEMERIS_TYPE.RISE) {
-            const objectTransit = this.getObjectTransit(otherSolarSystemObject, julianDate);
-            const localHourAngle = this.getObjectLocalHourAngleForAltitude(otherSolarSystemObject, julianDate, Constants.SUN_ALTITUDE_FOR_EPHEMERIS.RISE_OR_SET);
-            const angleUntilRise = MathHelper.mod180Degrees(objectTransit + localHourAngle);
-            return julianDate - angleUntilRise / 15 / 24;
-        } else if (ephemerisType === Constants.EPHEMERIS_TYPE.SET) {
-            const objectTransit = this.getObjectTransit(otherSolarSystemObject, julianDate);
-            const localHourAngle = this.getObjectLocalHourAngleForAltitude(otherSolarSystemObject, julianDate, Constants.SUN_ALTITUDE_FOR_EPHEMERIS.RISE_OR_SET);
-            const angleUntilRise = MathHelper.mod180Degrees(objectTransit - localHourAngle);
+            return julianDate - this.getObjectTransit(solarSystemObject, julianDate) / 15 / 24;
+        } else {
+            const objectTransit = this.getObjectTransit(solarSystemObject, julianDate);
+            const localHourAngle = this.getObjectLocalHourAngleForAltitude(solarSystemObject, julianDate, ephemerisType.ALTITUDE);
+            const angleUntilRise = MathHelper.mod180Degrees(ephemerisType.IS_GOING_UP ? objectTransit + localHourAngle : objectTransit - localHourAngle);
             return julianDate - angleUntilRise / 15 / 24;
         }
     }
 
-    getPositionalEphemerisForObject(otherSolarSystemObject, julianDate, ephemerisType) {
+    iteratePositionalEphemerisForObject(otherSolarSystemObject, julianDate, ephemerisType) {
         let result = this.getIterationValueForPositionalEphemerisForObject(otherSolarSystemObject, julianDate, ephemerisType);
         let oldResult = +result;
         for (let loopCount = 0; loopCount < 1000; loopCount++) {
@@ -99,5 +94,22 @@ export class Observer {
             oldResult = result;
         }
         return TimeHelper.julianDateToDate(result);
+    }
+
+    getCorrectDateForPositionalEphemeris(otherSolarSystemObject, julianDate, ephemerisType, numberOfAttemptsLeft) {
+        const result = this.iteratePositionalEphemerisForObject(otherSolarSystemObject, julianDate, ephemerisType);
+        if (numberOfAttemptsLeft > 0 && result.getDate() !== TimeHelper.julianDateToDate(julianDate).getDate()) {
+            const resultAsJulianDate = TimeHelper.julianDate(result);
+            const deltaDays = resultAsJulianDate > julianDate ? -1 : 1;
+            return this.getCorrectDateForPositionalEphemeris(otherSolarSystemObject, resultAsJulianDate + deltaDays, ephemerisType, numberOfAttemptsLeft - 1);
+        } else if (numberOfAttemptsLeft === 0) {
+            return null;
+        } else {
+            return result;
+        }
+    }
+
+    getDateForPositionalEphemeris(otherSolarSystemObject, julianDate, ephemerisType) {
+        return this.getCorrectDateForPositionalEphemeris(otherSolarSystemObject, julianDate, ephemerisType, Constants.NUMBERS_OF_ATTEMPT_TO_GET_POSITIONAL_EPHEMERIS);
     }
 }
