@@ -32,7 +32,11 @@ describe('MainModule', function () {
         expect(raDec.longitude).toBeCloseTo(281.29, 2);
     });
     it('should get altitude and azimuth for sun in epoch J2000', function () {
-        const altAz = MainModule.getAltAzCoordinatesForObject('Sun');
+        let altAz = MainModule.getAltAzCoordinatesForObject('Sun');
+        expect(altAz.latitude).toBeCloseTo(15.49, 2);
+        expect(altAz.longitude).toBeCloseTo(179.21, 2);
+
+        altAz = MainModule.getAltAzCoordinatesForObject('Sun', EPOCH_2000_DATE);
         expect(altAz.latitude).toBeCloseTo(15.49, 2);
         expect(altAz.longitude).toBeCloseTo(179.21, 2);
     });
