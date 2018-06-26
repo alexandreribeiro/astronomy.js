@@ -2,6 +2,7 @@ import {TimeHelper} from './time-helper';
 import {Observer} from './observer';
 import {SphericalCoordinates} from './coordinates/spherical-coordinates';
 import {SOLAR_SYSTEM_OBJECTS_LIST} from './solar-system-objects/solar-system-objects-list';
+import {Constants} from './constants';
 
 export const MainModule = {
     _skyObjects: [].concat(SOLAR_SYSTEM_OBJECTS_LIST),
@@ -9,20 +10,20 @@ export const MainModule = {
     _julianDate: null,
     _date: null,
 
-    getJulianDate: function() {
+    getJulianDate: function () {
         return this._julianDate;
     },
-    setJulianDate: function(newJulianDate) {
+    setJulianDate: function (newJulianDate) {
         this._julianDate = newJulianDate;
     },
-    getDate: function() {
+    getDate: function () {
         return this._date;
     },
-    setDate: function(newDate) {
+    setDate: function (newDate) {
         this._date = newDate;
         this.setJulianDate(TimeHelper.julianDate(newDate));
     },
-    getSkyObjectByName: function(objectName) {
+    getSkyObjectByName: function (objectName) {
         for (let i in this._skyObjects) {
             if (this._skyObjects[i].name === objectName) {
                 return this._skyObjects[i];
@@ -30,18 +31,31 @@ export const MainModule = {
         }
         return null;
     },
-    setObserverLocation: function(objectName, latitude, longitude, elevationFromObjectSurface) {
+    getEphemerisTypeByName: function (objectName) {
+        for (let i in Constants.EPHEMERIS_TYPE) {
+            if (Constants.EPHEMERIS_TYPE[i].NAME === objectName) {
+                return Constants.EPHEMERIS_TYPE[i];
+            }
+        }
+        return null;
+    },
+    setObserverLocation: function (objectName, latitude, longitude, elevationFromObjectSurface) {
         const solarSystemObject = this.getSkyObjectByName(objectName);
         this._observer = new Observer(
             new SphericalCoordinates(latitude, longitude, solarSystemObject.meanRadius + elevationFromObjectSurface),
             solarSystemObject
         );
     },
-    getRADecCoordinatesForObject: function(objectName) {
+    getRADecCoordinatesForObject: function (objectName) {
         return this._observer.getRADecCoordinatesForSolarSystemObject(this.getSkyObjectByName(objectName), this.getJulianDate());
     },
-    getAltAzCoordinatesForObject: function(objectName) {
+    getAltAzCoordinatesForObject: function (objectName) {
         const equatorialCoordinates = this._observer.getRADecCoordinatesForSolarSystemObject(this.getSkyObjectByName(objectName), this.getJulianDate());
         return this._observer.getAltAzCoordinatesForEquatorialCoordinates(equatorialCoordinates, this.getJulianDate());
+    },
+    getEphemerisDateForObject: function (objectName, referenceDate, ephemerisTypeName) {
+        const solarSystemObject = this.getSkyObjectByName(objectName);
+        const ephemerisType = this.getEphemerisTypeByName(ephemerisTypeName);
+        return this._observer.getDateForPositionalEphemeris(solarSystemObject, TimeHelper.julianDate(referenceDate), ephemerisType);
     }
 };

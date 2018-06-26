@@ -8,7 +8,7 @@ export const Constants = {
     KIRUNA_COORDINATES: {
         LATITUDE: 67.85,
         LONGITUDE: 20.21,
-        RADIUS: 6371000 + 46
+        RADIUS: 6371000 + 500
     },
     EPHEMERIS_TYPE: {
         RISE: {

@@ -109,7 +109,7 @@ export class Observer {
         }
     }
 
-    getDateForPositionalEphemeris(otherSolarSystemObject, julianDate, ephemerisType) {
-        return this.getCorrectDateForPositionalEphemeris(otherSolarSystemObject, julianDate, ephemerisType, Constants.NUMBERS_OF_ATTEMPT_TO_GET_POSITIONAL_EPHEMERIS);
+    getDateForPositionalEphemeris(solarSystemObject, julianDate, ephemerisType) {
+        return this.getCorrectDateForPositionalEphemeris(solarSystemObject, julianDate, ephemerisType, Constants.NUMBERS_OF_ATTEMPT_TO_GET_POSITIONAL_EPHEMERIS);
     }
 }
