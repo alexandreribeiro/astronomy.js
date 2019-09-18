@@ -21,7 +21,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'astronomy.min.js',
+        filename: '[name].js',
         library: 'AstronomyJS',
         libraryExport: 'MainModule',
         libraryTarget: 'umd'

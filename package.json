@@ -25,26 +25,27 @@
   },
   "homepage": "https://github.com/alexandreribeiro/astronomy.js#readme",
   "dependencies": {
-    "npm": "^5.8.0"
+    "npm": "^6.11.3"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-istanbul": "^4.1.6",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "coveralls": "^3.0.0",
-    "eslint": "^4.19.1",
-    "eslint-loader": "^2.0.0",
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-istanbul": "^5.2.0",
+    "coveralls": "^3.0.6",
+    "eslint": "^6.4.0",
+    "eslint-loader": "^3.0.0",
     "istanbul-instrumenter-loader": "^3.0.1",
-    "jasmine": "^3.1.0",
-    "karma": "^2.0.0",
-    "karma-coverage": "^1.1.1",
-    "karma-coverage-istanbul-reporter": "^1.4.2",
-    "karma-jasmine": "^1.1.1",
+    "jasmine": "^3.4.0",
+    "karma": "^4.3.0",
+    "karma-coverage": "^2.0.1",
+    "karma-coverage-istanbul-reporter": "^2.1.0",
+    "karma-jasmine": "^2.0.1",
     "karma-phantomjs-launcher": "^1.0.4",
-    "karma-webpack": "^3.0.0",
-    "webpack": "^4.5.0",
-    "webpack-cli": "^2.0.14"
+    "karma-webpack": "^4.0.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.9"
   }
 }
