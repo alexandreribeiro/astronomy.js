@@ -49,6 +49,9 @@ export const MainModule = {
     getRADecCoordinatesForObject: function (objectName) {
         return this._observer.getRADecCoordinatesForSolarSystemObject(this.getSkyObjectByName(objectName), this.getJulianDate());
     },
+    getHADecCoordinatesForObject: function (objectName) {
+        return this._observer.getHADecCoordinatesForSolarSystemObject(this.getSkyObjectByName(objectName), this.getJulianDate());
+    },
     getAltAzCoordinatesForObject: function (objectName, referenceDate) {
         referenceDate = referenceDate ? TimeHelper.julianDate(referenceDate) : this.getJulianDate();
         const equatorialCoordinates = this._observer.getRADecCoordinatesForSolarSystemObject(this.getSkyObjectByName(objectName), referenceDate);

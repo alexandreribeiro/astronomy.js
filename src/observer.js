@@ -46,6 +46,16 @@ export class Observer {
         return new SphericalCoordinates(declination, rightAscension, this.getDistanceToSolarSystemObject(otherSolarSystemObject, julianDate));
     }
 
+    getHADecCoordinatesForSolarSystemObject(otherSolarSystemObject, julianDate) {
+        const equatorialCoordinates =
+            this.getRectangularEquatorialCoordinatesForSolarSystemObject(otherSolarSystemObject, julianDate);
+        const correction = (equatorialCoordinates.x > 0 && equatorialCoordinates.y < 0) ? 360 : (equatorialCoordinates.x < 0) ? 180 : 0;
+        const rightAscension = MathHelper.radiansToDegrees(Math.atan(equatorialCoordinates.y / equatorialCoordinates.x)) + correction;
+        const localHourAngle = MathHelper.modDegrees(this.getLocalSiderealTime(julianDate) - rightAscension);
+        const declination = MathHelper.radiansToDegrees(Math.atan(equatorialCoordinates.z / Math.sqrt(Math.pow(equatorialCoordinates.x, 2) + Math.pow(equatorialCoordinates.y, 2))));
+        return new SphericalCoordinates(declination, localHourAngle, this.getDistanceToSolarSystemObject(otherSolarSystemObject, julianDate));
+    }
+
     getAltAzCoordinatesForEquatorialCoordinates(equatorialCoordinates, julianDate) {
         const hourAngle = MathHelper.degreesToRadians(MathHelper.modDegrees(equatorialCoordinates.longitude - this.getLocalSiderealTime(julianDate)));
         const latitude = MathHelper.degreesToRadians(this.sphericalCoordinates.latitude);

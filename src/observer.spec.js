@@ -59,6 +59,26 @@ describe('Observer', function () {
         expect(RADecForMars.longitude).toBeCloseTo(142.35, 2);
     });
 
+    it('should calculate HA/Dec to solar system objects in epoch day zero correctly', function () {
+        const HADecForSun = greenwichObserver.getHADecCoordinatesForSolarSystemObject(sun, Constants.JULIAN_DAY_2000);
+        expect(HADecForSun.latitude).toBeCloseTo(-23.03, 2);
+        expect(HADecForSun.longitude).toBeCloseTo(359.17, 2);
+
+        const HADecForMars = greenwichObserver.getHADecCoordinatesForSolarSystemObject(mars, Constants.JULIAN_DAY_2000);
+        expect(HADecForMars.latitude).toBeCloseTo(-13.18, 2);
+        expect(HADecForMars.longitude).toBeCloseTo(309.92, 2);
+    });
+
+    it('should calculate HA/Dec to solar system objects in epoch day zero plus one decade correctly', function () {
+        const HADecForSun = greenwichObserver.getHADecCoordinatesForSolarSystemObject(sun, Constants.JULIAN_DAY_2010);
+        expect(HADecForSun.latitude).toBeCloseTo(-23.04, 2);
+        expect(HADecForSun.longitude).toBeCloseTo(179.32, 2);
+
+        const HADecForMars = greenwichObserver.getHADecCoordinatesForSolarSystemObject(mars, Constants.JULIAN_DAY_2010);
+        expect(HADecForMars.latitude).toBeCloseTo(18.79, 2);
+        expect(HADecForMars.longitude).toBeCloseTo(318.19, 2);
+    });
+
     it('should calculate Alt/Az to solar system objects in epoch day zero correctly', function () {
         const RADecForSun = greenwichObserver.getRADecCoordinatesForSolarSystemObject(sun, Constants.JULIAN_DAY_2000);
         const AltAzForSun = greenwichObserver.getAltAzCoordinatesForEquatorialCoordinates(RADecForSun, Constants.JULIAN_DAY_2000);

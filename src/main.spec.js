@@ -31,6 +31,11 @@ describe('MainModule', function () {
         expect(raDec.latitude).toBeCloseTo(-23.03, 2);
         expect(raDec.longitude).toBeCloseTo(281.29, 2);
     });
+    it('should get local hour angle and declination for sun in epoch J2000', function () {
+        const haDec = MainModule.getHADecCoordinatesForObject('Sun');
+        expect(haDec.latitude).toBeCloseTo(-23.03, 2);
+        expect(haDec.longitude).toBeCloseTo(359.17, 2);
+    });
     it('should get altitude and azimuth for sun in epoch J2000', function () {
         let altAz = MainModule.getAltAzCoordinatesForObject('Sun');
         expect(altAz.latitude).toBeCloseTo(15.49, 2);
