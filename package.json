@@ -1,22 +1,29 @@
 {
   "name": "astronomyjs",
-  "version": "1.0.0-alpha.0",
-  "description": "A simple astronomy library made in javascript.",
-  "main": "src/astronomy.js",
-  "directories": {
-    "test": "test"
-  },
+  "version": "1.0.0",
+  "description": "A lightweight javascript library with astronomical calculations.",
+  "main": "main.js",
   "scripts": {
-    "test": "node ./node_modules/karma/bin/karma start karma.conf.js",
-    "build": "webpack"
+    "build": "vite build",
+    "test": "vitest --run",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexandreribeiro/astronomy.js.git"
   },
+  "type": "module",
   "keywords": [
     "astronomy",
-    "javascript"
+    "javascript",
+    "universe",
+    "sun",
+    "moon",
+    "earth",
+    "jupiter",
+    "saturn",
+    "mars"
   ],
   "author": "Alexandre Ribeiro",
   "license": "ISC",
@@ -24,28 +31,13 @@
     "url": "https://github.com/alexandreribeiro/astronomy.js/issues"
   },
   "homepage": "https://github.com/alexandreribeiro/astronomy.js#readme",
-  "dependencies": {
-    "npm": "^6.11.3"
-  },
   "devDependencies": {
-    "@babel/cli": "^7.6.0",
-    "@babel/core": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
-    "babel-loader": "^8.0.6",
-    "babel-plugin-istanbul": "^5.2.0",
-    "coveralls": "^3.0.6",
-    "eslint": "^6.4.0",
-    "eslint-loader": "^3.0.0",
-    "istanbul-instrumenter-loader": "^3.0.1",
-    "jasmine": "^3.4.0",
-    "karma": "^4.3.0",
-    "karma-coverage": "^2.0.1",
-    "karma-coverage-istanbul-reporter": "^2.1.0",
-    "karma-jasmine": "^2.0.1",
-    "karma-phantomjs-launcher": "^1.0.4",
-    "karma-webpack": "^4.0.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9"
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.0",
+    "prettier-eslint": "^16.3.0",
+    "vite": "^6.1.1",
+    "vitest": "^3.0.5"
   }
 }

@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
     <title>AstronomyJS</title>
     <script type="text/javascript" src="dist/astronomy.min.js"></script>
@@ -33,22 +33,22 @@
             <table id="time-table" style="margin: auto;">
                 <tr>
                     <td>
-                        <input type="text" id="year">
+                        <input id="year" type="text">
                     </td>
                     <td>
-                        <input type="text" id="month">
+                        <input id="month" type="text">
                     </td>
                     <td>
-                        <input type="text" id="day">
+                        <input id="day" type="text">
                     </td>
                     <td>
-                        <input type="text" id="hour">
+                        <input id="hour" type="text">
                     </td>
                     <td>
-                        <input type="text" id="minute">
+                        <input id="minute" type="text">
                     </td>
                     <td>
-                        <input type="text" id="second">
+                        <input id="second" type="text">
                     </td>
                     <td>
                         <button onclick="updateTime(false)">
@@ -96,8 +96,8 @@
                 </tr>
                 <tr>
 
-                    <td><input type="text" id="latitude" value="51.476852"></td>
-                    <td><input type="text" id="longitude" value="-0.000500"></td>
+                    <td><input id="latitude" type="text" value="51.476852"></td>
+                    <td><input id="longitude" type="text" value="-0.000500"></td>
                     <td>
                         <button onclick="updateLatitudeAndLongitude()">Set</button>
                     </td>
@@ -115,7 +115,7 @@
             </table>
         </td>
         <td>
-            <img src="" id="geolocationImage" onerror="clearGeolocationImage()">
+            <img id="geolocationImage" onerror="clearGeolocationImage()" src="">
         </td>
     </tr>
 </table>
@@ -134,10 +134,11 @@
 </table>
 </body>
 <script type="text/javascript">
+    // AstronomyJS = AstronomyJS.AstronomyJS;
     updateLatitudeAndLongitude();
-    var solarSystemObjectsToDisplay = ["Sun", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
-    var solarSystemTable = document.getElementById("solar-system-table");
-    var javascriptIntervalForUpdatingAstronomicalData = null;
+    const solarSystemObjectsToDisplay = ["Sun", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
+    const solarSystemTable = document.getElementById("solar-system-table");
+    let javascriptIntervalForUpdatingAstronomicalData = null;
     updateTime(true);
 
     function updateTime(updateTimeAutomatically) {
@@ -159,7 +160,7 @@
             solarSystemTable.deleteRow(1);
         }
         updateTimeTable(AstronomyJS.getDate());
-        for (i in solarSystemObjectsToDisplay) {
+        for (let i in solarSystemObjectsToDisplay) {
             var objectName = solarSystemObjectsToDisplay[i];
             var altAzCoordinates = AstronomyJS.getAltAzCoordinatesForObject(objectName).toDegrees();
             var raDecCoordinates = AstronomyJS.getRADecCoordinatesForObject(objectName).toHours();
