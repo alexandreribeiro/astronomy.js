@@ -1,7 +1,20 @@
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>AstronomyJS</title>
     <script type="text/javascript" src="dist/astronomy.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        #coordinates {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
     <style>
         th, td {
             width: 120px;
@@ -96,8 +109,8 @@
                 </tr>
                 <tr>
 
-                    <td><input id="latitude" type="text" value="51.476852"></td>
-                    <td><input id="longitude" type="text" value="-0.000500"></td>
+                    <td><input id="latitude" type="text"></td>
+                    <td><input id="longitude" type="text"></td>
                     <td>
                         <button onclick="updateLatitudeAndLongitude()">Set</button>
                     </td>
@@ -114,9 +127,6 @@
                 </tr>
             </table>
         </td>
-        <td>
-            <img id="geolocationImage" onerror="clearGeolocationImage()" src="">
-        </td>
     </tr>
 </table>
 
@@ -132,14 +142,75 @@
     </tr>
     </thead>
 </table>
+
+<h3>Click on the map to get coordinates:</h3>
+<div id="map"></div>
+<p id="coordinates">Lat: -, Lng: -</p>
 </body>
 <script type="text/javascript">
-    // AstronomyJS = AstronomyJS.AstronomyJS;
-    updateLatitudeAndLongitude();
     const solarSystemObjectsToDisplay = ["Sun", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
     const solarSystemTable = document.getElementById("solar-system-table");
     let javascriptIntervalForUpdatingAstronomicalData = null;
     updateTime(true);
+
+    const mapHandler = {
+        map: null,
+        marker: null,
+
+        initializeMap: function (coordinates) {
+            this.map = L.map('map');
+            this.marker = null;
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(this.map);
+            this.updateMap(coordinates);
+
+            this.map.on('click', this.onMapClick.bind(this));
+        },
+
+        onMapClick: function(e) {
+            let coordinates = [e.latlng.lat.toFixed(6), e.latlng.lng.toFixed(6)];
+            this.updateMap(coordinates);
+        },
+
+        updateMap: function (coordinates) {
+            if (this.marker) {
+                this.map.removeLayer(this.marker);
+            }
+            this.marker = L.marker(coordinates).addTo(this.map);
+            this.map.setView(coordinates, 13);
+            document.getElementById("latitude").value = coordinates[0];
+            document.getElementById("longitude").value = coordinates[1];
+        },
+    }
+
+    let initialPosition = [51.477335, -0.000874];
+    document.getElementById("latitude").value = initialPosition[0];
+    document.getElementById("longitude").value = initialPosition[1];
+    mapHandler.initializeMap(initialPosition);
+    updateLatitudeAndLongitude();
+
+    function findGeolocation() {
+        let geolocationInformation = document.getElementById("geolocationInformation");
+        geolocationInformation.innerHTML = "<p>Locating...</p>";
+        if (!navigator.geolocation) {
+            geolocationInformation.innerHTML = "<p>Geolocation is not supported by your browser</p>";
+            return;
+        }
+
+        function success(position) {
+            geolocationInformation.innerHTML = '';
+            document.getElementById("latitude").value = position.coords.latitude;
+            document.getElementById("longitude").value = position.coords.longitude;
+            updateLatitudeAndLongitude();
+        }
+
+        function error() {
+            geolocationInformation.innerHTML = "Unable to retrieve your location";
+        }
+
+        navigator.geolocation.getCurrentPosition(success, error);
+    }
 
     function updateTime(updateTimeAutomatically) {
         window.clearInterval(javascriptIntervalForUpdatingAstronomicalData);
@@ -148,7 +219,7 @@
             javascriptIntervalForUpdatingAstronomicalData = window.setInterval(function () {
                 AstronomyJS.setDate(new Date());
                 updateAstronomicalData();
-            }, 100);
+            }, 1000);
         } else {
             AstronomyJS.setDate(getDateFromTimeTable());
             updateAstronomicalData();
@@ -195,39 +266,11 @@
         document.getElementById("second").value = newDate.getSeconds();
     }
 
-    function clearGeolocationImage() {
-        var geolocationImage = document.getElementById("geolocationImage");
-        geolocationImage.src = "";
-    }
-
     function updateLatitudeAndLongitude() {
-        var latitude = document.getElementById("latitude").value;
-        var longitude = document.getElementById("longitude").value;
+        let latitude = document.getElementById("latitude").value;
+        let longitude = document.getElementById("longitude").value;
+        mapHandler.updateMap([latitude, longitude]);
         AstronomyJS.setObserverLocation('Earth', parseFloat(latitude), parseFloat(longitude), 46);
-        var geolocationImage = document.getElementById("geolocationImage");
-        geolocationImage.src = "https://maps.googleapis.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=13&size=300x300&sensor=false";
-    }
-
-    function findGeolocation() {
-        var geolocationInformation = document.getElementById("geolocationInformation");
-        geolocationInformation.innerHTML = "<p>Locating...</p>";
-        if (!navigator.geolocation) {
-            geolocationInformation.innerHTML = "<p>Geolocation is not supported by your browser</p>";
-            return;
-        }
-
-        function success(position) {
-            geolocationInformation.innerHTML = '';
-            document.getElementById("latitude").value = position.coords.latitude;
-            document.getElementById("longitude").value = position.coords.longitude;
-            updateLatitudeAndLongitude();
-        }
-
-        function error() {
-            geolocationInformation.innerHTML = "Unable to retrieve your location";
-        }
-
-        navigator.geolocation.getCurrentPosition(success, error);
     }
 
 </script>

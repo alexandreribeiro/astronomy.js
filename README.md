@@ -7,7 +7,7 @@ AstronomyJS
 Astronomic calculations in javascript.
 You can see this project running at: <https://rawgit.com/alexandreribeiro/astronomy.js/master/sample.html>
 
-## Quick guide
+## Quick Start
 
 ```javascript
 // Earth, latitude, longitude, elevation from sea level (in meters)
@@ -21,6 +21,13 @@ AstronomyJS.getAltAzCoordinatesForObject('Sun');
 ## Tests
 
 `npm run test`
+
+## Functions
+
+- getRADecCoordinatesForObject
+- getHADecCoordinatesForObject
+- getAltAzCoordinatesForObject
+- getEphemerisDateForObject
 
 ## About
 

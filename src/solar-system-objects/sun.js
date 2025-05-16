@@ -6,7 +6,7 @@ export class Sun extends SolarSystemObject {
     super("Sun", null, 695508000);
   }
 
-  getRectangularHeliocentricCoordinates() {
+  getRectangularHeliocentricCoordinates(julianDate) {
     return new RectangularCoordinates(0, 0, 0);
   }
 }
