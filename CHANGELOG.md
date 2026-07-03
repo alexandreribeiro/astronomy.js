@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-07-04
+
+### Added
+
+- Added `getNextMoonPhaseDate(phase, referenceDate)` to `AstronomyJS` for calculating the next date when the Moon
+  reaches a requested phase.
+- Added `getPreviousMoonPhaseDate(phase, referenceDate)` to `AstronomyJS` for calculating the previous date when the
+  Moon reached a requested phase.
+- Added support for the 8 common Moon phases:
+    - `NEW_MOON`
+    - `WAXING_CRESCENT`
+    - `FIRST_QUARTER`
+    - `WAXING_GIBBOUS`
+    - `FULL_MOON`
+    - `WANING_GIBBOUS`
+    - `LAST_QUARTER`
+    - `WANING_CRESCENT`
+- Added TypeScript support for Moon phase names via `MoonPhaseName`.
+- Added a Moon phases section to the demo showing the next upcoming phase dates.
+
+### Changed
+
+- Moon phase date methods now use the current simulation date when `referenceDate` is omitted or passed as `null`.
+- The demo location map now degrades gracefully when Leaflet is unavailable.
+
 ## [1.0.0] - 2026-04-12
 
 ### Added
@@ -95,6 +120,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - sky object and ephemeris type lookup
     - equatorial, hour angle, and horizontal coordinate calculations
     - ephemeris date calculations
+
+[1.1.0]: https://www.npmjs.com/package/astronomy-js/v/1.1.0
 
 [1.0.0]: https://www.npmjs.com/package/astronomy-js/v/1.0.0
 
