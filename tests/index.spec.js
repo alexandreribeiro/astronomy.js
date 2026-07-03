@@ -98,29 +98,61 @@ describe("AstronomyEngine", function () {
   describe("getIlluminatedFractionForObject", () => {
     it("returns the expected illuminated fraction for the Moon at JD2000", () => {
       astronomyEngine.setDate(EPOCH_2000_DATE);
-      expect(astronomyEngine.getIlluminatedFractionForObject("Moon")).toBeCloseTo(
-        0.23,
-        2,
-      );
+      expect(
+        astronomyEngine.getIlluminatedFractionForObject("Moon"),
+      ).toBeCloseTo(0.23, 2);
     });
 
     it("returns the expected illuminated fraction for Venus at JD2000", () => {
       astronomyEngine.setDate(EPOCH_2000_DATE);
-      expect(astronomyEngine.getIlluminatedFractionForObject("Venus")).toBeCloseTo(
-        0.758,
-        2,
-      );
+      expect(
+        astronomyEngine.getIlluminatedFractionForObject("Venus"),
+      ).toBeCloseTo(0.758, 2);
     });
     it("returns the expected illuminated fraction for the Moon at JD2000 using date", () => {
       expect(
-        astronomyEngine.getIlluminatedFractionForObject("Moon", EPOCH_2000_DATE),
+        astronomyEngine.getIlluminatedFractionForObject(
+          "Moon",
+          EPOCH_2000_DATE,
+        ),
       ).toBeCloseTo(0.23, 2);
     });
 
     it("returns the expected illuminated fraction for Venus at JD2000 using date", () => {
       expect(
-        astronomyEngine.getIlluminatedFractionForObject("Venus", EPOCH_2000_DATE),
+        astronomyEngine.getIlluminatedFractionForObject(
+          "Venus",
+          EPOCH_2000_DATE,
+        ),
       ).toBeCloseTo(0.758, 2);
+    });
+  });
+
+  describe("getMoonPhaseDate", () => {
+    it("returns next Moon phase date using the instance date", () => {
+      astronomyEngine.setDate(EPOCH_2000_DATE);
+      const nextFullMoonDate =
+        astronomyEngine.getNextMoonPhaseDate("FULL_MOON");
+
+      expect(nextFullMoonDate).toBeInstanceOf(Date);
+      expect(nextFullMoonDate.getTime()).toBeGreaterThan(EPOCH_2000_DATE);
+    });
+
+    it("returns next Moon phase date using null as the reference date", () => {
+      astronomyEngine.setDate(EPOCH_2000_DATE);
+      expect(
+        astronomyEngine.getNextMoonPhaseDate("FULL_MOON", null).getTime(),
+      ).toBe(astronomyEngine.getNextMoonPhaseDate("FULL_MOON").getTime());
+    });
+
+    it("returns previous Moon phase date using a reference date", () => {
+      const previousFullMoonDate = astronomyEngine.getPreviousMoonPhaseDate(
+        "FULL_MOON",
+        EPOCH_2000_DATE,
+      );
+
+      expect(previousFullMoonDate).toBeInstanceOf(Date);
+      expect(previousFullMoonDate.getTime()).toBeLessThan(EPOCH_2000_DATE);
     });
   });
 });

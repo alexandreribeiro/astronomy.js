@@ -184,6 +184,48 @@ export class AstronomyJS {
   }
 
   /**
+   * @param {string|object} moonPhase - Moon phase name or phase object
+   * @param {Date|null} [referenceDate] - optional reference date
+   * @returns {Date} - next date when the Moon reaches the target phase
+   */
+  getNextMoonPhaseDate(moonPhase, referenceDate) {
+    const julianReferenceDate =
+      referenceDate !== undefined && referenceDate !== null
+        ? JulianDateCalculator.julianDate(referenceDate)
+        : this.julianDate;
+
+    if (julianReferenceDate === null) {
+      throw new Error("Julian date not set");
+    }
+
+    return AstronomicalCalculator.getNextMoonPhaseDate(
+      moonPhase,
+      julianReferenceDate,
+    );
+  }
+
+  /**
+   * @param {string|object} moonPhase - Moon phase name or phase object
+   * @param {Date|null} [referenceDate] - optional reference date
+   * @returns {Date} - previous date when the Moon reached the target phase
+   */
+  getPreviousMoonPhaseDate(moonPhase, referenceDate) {
+    const julianReferenceDate =
+      referenceDate !== undefined && referenceDate !== null
+        ? JulianDateCalculator.julianDate(referenceDate)
+        : this.julianDate;
+
+    if (julianReferenceDate === null) {
+      throw new Error("Julian date not set");
+    }
+
+    return AstronomicalCalculator.getPreviousMoonPhaseDate(
+      moonPhase,
+      julianReferenceDate,
+    );
+  }
+
+  /**
    * @returns {number} - local mean sidereal time in degrees
    */
   getLocalMeanSiderealTime() {

@@ -42,6 +42,16 @@ declare module "astronomy-js" {
     observerLocation: ObserverLocation;
   }
 
+  export type MoonPhaseName =
+    | "NEW_MOON"
+    | "WAXING_CRESCENT"
+    | "FIRST_QUARTER"
+    | "WAXING_GIBBOUS"
+    | "FULL_MOON"
+    | "WANING_GIBBOUS"
+    | "LAST_QUARTER"
+    | "WANING_CRESCENT";
+
   export class AstronomyJS {
     skyObjects: typeof SOLAR_SYSTEM_OBJECTS_LIST;
     astronomicalCalculator: AstronomicalCalculator;
@@ -88,6 +98,16 @@ declare module "astronomy-js" {
       objectName: string,
       referenceDate?: Date
     ): number;
+
+    getNextMoonPhaseDate(
+      moonPhaseName: MoonPhaseName,
+      referenceDate?: Date | null
+    ): Date;
+
+    getPreviousMoonPhaseDate(
+      moonPhaseName: MoonPhaseName,
+      referenceDate?: Date | null
+    ): Date;
 
     getLocalMeanSiderealTime(): number;
 

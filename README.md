@@ -150,6 +150,28 @@ The main class to interact with the library.
     Returns: 0.253
     */
     ```
+- `getNextMoonPhaseDate(phase, [referenceDate])`
+  - Calculates the next date when the Moon reaches one of the 8 common phases.
+  - **Parameters:**
+    - `phase` (string): One of `NEW_MOON`, `WAXING_CRESCENT`, `FIRST_QUARTER`, `WAXING_GIBBOUS`, `FULL_MOON`, `WANING_GIBBOUS`, `LAST_QUARTER`, `WANING_CRESCENT`.
+    - `referenceDate` (Date or `null`, optional): Overrides the instance date. Use `null` or omit it to use the current simulation date.
+  - **Returns:** `Date`.
+  - **Example:**
+    ```javascript
+    const nextFullMoon = astronomy.getNextMoonPhaseDate("FULL_MOON", null);
+    // Returns: Date
+    ```
+- `getPreviousMoonPhaseDate(phase, [referenceDate])`
+  - Calculates the previous date when the Moon reached one of the 8 common phases.
+  - **Parameters:**
+    - `phase` (string): One of `NEW_MOON`, `WAXING_CRESCENT`, `FIRST_QUARTER`, `WAXING_GIBBOUS`, `FULL_MOON`, `WANING_GIBBOUS`, `LAST_QUARTER`, `WANING_CRESCENT`.
+    - `referenceDate` (Date or `null`, optional): Overrides the instance date. Use `null` or omit it to use the current simulation date.
+  - **Returns:** `Date`.
+  - **Example:**
+    ```javascript
+    const previousNewMoon = astronomy.getPreviousMoonPhaseDate("NEW_MOON", new Date());
+    // Returns: Date
+    ```
 - `getEphemerisDateForObject(objectName, referenceDate, ephemerisTypeName)`
   - Finds the date of an ephemeris event (e.g., "Rise", "Set").
   - **Parameters:**
@@ -227,6 +249,7 @@ Use these names with `getEphemerisDateForObject`:
 - Right Ascension and Declination for celestial body
 - Hour Angle and Declination for celestial body
 - Altitude and Azimuth for celestial body
+- Next and previous Moon phase dates
 - Ephemeris for the Sun (astronomical twilight, nautical twilight, civil twilight)
 - Ephemeris for celestial body (rise, set)
 - 🔭 Includes Pluto!

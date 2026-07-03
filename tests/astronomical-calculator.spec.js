@@ -7,6 +7,8 @@ import { Moon } from "../lib/solar-system-objects/satellites/moon.js";
 import { Mars } from "../lib/solar-system-objects/planets/mars.js";
 import { Sun } from "../lib/solar-system-objects/sun.js";
 import { Venus } from "../lib/solar-system-objects/planets/venus.js";
+import { AngleCalculator } from "../lib/angle-calculator.js";
+import { JulianDateCalculator } from "../lib/time/julian-date-calculator.js";
 
 describe("AstronomicalCalculator", () => {
   const mars = new Mars();
@@ -461,6 +463,70 @@ describe("AstronomicalCalculator", () => {
           Constants.JULIAN_DAY_2000,
         ),
       ).toBeCloseTo(0.758, 2);
+    });
+  });
+
+  describe("getMoonPhaseDate", () => {
+    it("returns the next date for a Moon phase", () => {
+      const nextFullMoonDate = AstronomicalCalculator.getNextMoonPhaseDate(
+        "FULL_MOON",
+        Constants.JULIAN_DAY_2000,
+      );
+      const nextFullMoonJulianDate =
+        JulianDateCalculator.julianDate(nextFullMoonDate);
+
+      expect(nextFullMoonDate).toBeInstanceOf(Date);
+      expect(nextFullMoonJulianDate).toBeGreaterThan(Constants.JULIAN_DAY_2000);
+      expect(
+        Math.abs(
+          AngleCalculator.mod180Degrees(
+            AstronomicalCalculator.getMoonPhaseAngle(nextFullMoonJulianDate) -
+              Constants.MOON_PHASE.FULL_MOON.ANGLE,
+          ),
+        ),
+      ).toBeLessThan(0.001);
+    });
+
+    it("returns the previous date for a Moon phase", () => {
+      const previousFullMoonDate =
+        AstronomicalCalculator.getPreviousMoonPhaseDate(
+          "FULL_MOON",
+          Constants.JULIAN_DAY_2000,
+        );
+      const previousFullMoonJulianDate =
+        JulianDateCalculator.julianDate(previousFullMoonDate);
+
+      expect(previousFullMoonDate).toBeInstanceOf(Date);
+      expect(previousFullMoonJulianDate).toBeLessThan(
+        Constants.JULIAN_DAY_2000,
+      );
+      expect(
+        Math.abs(
+          AngleCalculator.mod180Degrees(
+            AstronomicalCalculator.getMoonPhaseAngle(
+              previousFullMoonJulianDate,
+            ) - Constants.MOON_PHASE.FULL_MOON.ANGLE,
+          ),
+        ),
+      ).toBeLessThan(0.001);
+    });
+
+    it("accepts Moon phase objects", () => {
+      expect(
+        AstronomicalCalculator.getNextMoonPhaseDate(
+          Constants.MOON_PHASE.NEW_MOON,
+          Constants.JULIAN_DAY_2000,
+        ),
+      ).toBeInstanceOf(Date);
+    });
+
+    it("throws for an unknown Moon phase", () => {
+      expect(() => {
+        AstronomicalCalculator.getNextMoonPhaseDate(
+          "UNKNOWN_PHASE",
+          Constants.JULIAN_DAY_2000,
+        );
+      }).toThrow('Moon phase "UNKNOWN_PHASE" not found');
     });
   });
 });
