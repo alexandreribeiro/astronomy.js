@@ -95,6 +95,20 @@
     </table>
   </article>
 
+  <article>
+    <header>Moon Phases</header>
+    <table id="moonPhasesTable">
+      <thead>
+      <tr>
+        <th>Phase</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>In</th>
+      </tr>
+      </thead>
+    </table>
+  </article>
+
   <div class="grid">
     <article>
       <header>Ephemerides</header>
@@ -130,6 +144,16 @@
 
   const solarSystemObjectsToDisplay = ["Sun", "Mercury", "Venus", "Mars",
     "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"];
+  const moonPhasesToDisplay = [
+    { name: "NEW_MOON", angle: 0 },
+    { name: "WAXING_CRESCENT", angle: 45 },
+    { name: "FIRST_QUARTER", angle: 90 },
+    { name: "WAXING_GIBBOUS", angle: 135 },
+    { name: "FULL_MOON", angle: 180 },
+    { name: "WANING_GIBBOUS", angle: 225 },
+    { name: "LAST_QUARTER", angle: 270 },
+    { name: "WANING_CRESCENT", angle: 315 }
+  ];
   const initialLatitude = 51.477335;
   const initialLongitude = -0.000874;
   let astronomyJS = AstronomyJS.initialize(initialLatitude, initialLongitude);
@@ -139,6 +163,7 @@
   const solarSystemTable = document.getElementById("solarSystemTable");
   const ephemeridesTable = document.getElementById("ephemeridesTable");
   const sunEphemeridesTable = document.getElementById("sunEphemeridesTable");
+  const moonPhasesTable = document.getElementById("moonPhasesTable");
   latitudeInput.value = initialLatitude;
   longitudeInput.value = initialLongitude;
   latitudeInput.addEventListener("input", onLocationChange);
@@ -150,31 +175,41 @@
     onLocationChange();
   }
 
-  const map = L.map("map").setView([initialLatitude, initialLongitude], 13);
+  const leaflet = window.L;
+  let map = null;
+  let marker = null;
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "© OpenStreetMap contributors"
-  }).addTo(map);
+  if (leaflet) {
+    map = leaflet.map("map").setView([initialLatitude, initialLongitude], 13);
 
-  const marker = L.marker([initialLatitude, initialLongitude], { draggable: true }).addTo(map);
+    leaflet.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors"
+    }).addTo(map);
 
-  marker.on("dragend", function(_) {
-    const { lat, lng } = marker.getLatLng();
-    updateInputs(lat, lng);
-  });
+    marker = leaflet.marker([initialLatitude, initialLongitude], { draggable: true }).addTo(map);
 
-  map.on("click", function(e) {
-    const { lat, lng } = e.latlng;
-    marker.setLatLng([lat, lng]);
-    updateInputs(lat, lng);
-  });
+    marker.on("dragend", function(_) {
+      const { lat, lng } = marker.getLatLng();
+      updateInputs(lat, lng);
+    });
+
+    map.on("click", function(e) {
+      const { lat, lng } = e.latlng;
+      marker.setLatLng([lat, lng]);
+      updateInputs(lat, lng);
+    });
+  } else {
+    document.getElementById("map").textContent = "Map unavailable";
+  }
 
   function onLocationChange() {
     const latitude = parseFloat(latitudeInput.value);
     const longitude = parseFloat(longitudeInput.value);
     if (!isNaN(latitude) && !isNaN(longitude)) {
-      marker.setLatLng([latitude, longitude]);
-      map.setView([latitude, longitude], map.getZoom());
+      if (marker && map) {
+        marker.setLatLng([latitude, longitude]);
+        map.setView([latitude, longitude], map.getZoom());
+      }
       astronomyJS.setLocation("Earth", latitude, longitude);
       updateAllTilesWithTime(astronomyJS.getDate());
     }
@@ -230,6 +265,44 @@
       minute: "2-digit",
       hour12: false
     }) : "-";
+  }
+
+  function formatDateToDay(referenceDate) {
+    return referenceDate ? referenceDate.toLocaleDateString([], {
+      weekday: "short",
+      month: "short",
+      day: "numeric"
+    }) : "-";
+  }
+
+  function formatDaysUntil(referenceDate, eventDate) {
+    const daysUntil = (eventDate - referenceDate) / (1000 * 60 * 60 * 24);
+    if (daysUntil < 1) {
+      return "< 1 day";
+    }
+    return `${daysUntil.toFixed(1)} days`;
+  }
+
+  function formatMoonPhaseName(name) {
+    return name
+      .toLowerCase()
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
+  function getMoonPhaseSymbol(angle) {
+    const symbolsByAngle = {
+      0: "●",
+      45: "◔",
+      90: "◐",
+      135: "◕",
+      180: "○",
+      225: "◕",
+      270: "◑",
+      315: "◔"
+    };
+    return symbolsByAngle[angle] || "○";
   }
 
   function decimalDegreesToDegreesMinutes(decimalDegrees) {
@@ -291,6 +364,32 @@
       ]);
     }
     addValuesToTable(solarSystemTable, solarSystemTableRows);
+
+    while (moonPhasesTable.rows.length > 1) {
+      moonPhasesTable.deleteRow(1);
+    }
+    const referenceDate = astronomyJS.getDate();
+    let moonPhaseTableRows = moonPhasesToDisplay
+      .map((moonPhase) => {
+        const moonPhaseDate = astronomyJS.getNextMoonPhaseDate(
+          moonPhase.name,
+          null,
+        );
+        return {
+          ...moonPhase,
+          date: moonPhaseDate,
+        };
+      })
+      .sort((firstMoonPhase, secondMoonPhase) => {
+        return firstMoonPhase.date - secondMoonPhase.date;
+      })
+      .map((moonPhase) => [
+        `${getMoonPhaseSymbol(moonPhase.angle)} ${formatMoonPhaseName(moonPhase.name)}`,
+        formatDateToDay(moonPhase.date),
+        formatDateToHHMM(moonPhase.date),
+        formatDaysUntil(referenceDate, moonPhase.date)
+      ]);
+    addValuesToTable(moonPhasesTable, moonPhaseTableRows);
 
     while (ephemeridesTable.rows.length > 1) {
       ephemeridesTable.deleteRow(1);
